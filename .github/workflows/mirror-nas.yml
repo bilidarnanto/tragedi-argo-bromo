@@ -16,11 +16,16 @@ jobs:
           NAS_HOST: ${{ secrets.NAS_HOST }}
           NAS_USER: ${{ secrets.NAS_USER }}
         run: |
+          set -euo pipefail
+          set -x
+          test -n "$NAS_HOST" || { echo '::error::NAS_HOST kosong'; exit 1; }
+          test -n "$NAS_USER" || { echo '::error::NAS_USER kosong'; exit 1; }
+          test -n "$NAS_SSH_KEY" || { echo '::error::NAS_SSH_KEY kosong'; exit 1; }
           mkdir -p ~/.ssh
           printf '%s\n' "$NAS_SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p 22 "$NAS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
-          export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes'
+          export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new'
+          rm -rf mirror.git
           git clone --mirror "https://github.com/bestprofitsurabaya/tragedi-argo-bromo.git" mirror.git
           cd mirror.git
           git push --mirror "ssh://${NAS_USER}@${NAS_HOST}/home/${NAS_USER}/git/tragedi-argo-bromo.git"
