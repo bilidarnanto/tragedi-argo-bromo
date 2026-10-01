@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiga Menit Empat Puluh Delapan Detik — Rekonstruksi Tragedi Bekasi Timur</title>
+<style>
+  :root{
+    --bg:#faf8f4; --ink:#1a1714; --dim:#6b6259; --rule:#e2dbd0;
+    --accent:#b3441e; --accent2:#1e5f6e; --dark:#14100c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font:17px/1.75 Georgia,'Times New Roman',serif}
+  .mono{font-family:ui-monospace,'Cascadia Mono',Consolas,monospace}
+
+  /* ===== Hero ===== */
+  header.hero{background:var(--dark);color:#efe8dd;padding:72px 24px 64px;text-align:center}
+  .kicker{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#c8a24a}
+  .hero h1{font-size:clamp(34px,6vw,64px);line-height:1.12;font-weight:400;margin:18px auto 0;max-width:820px}
+  .hero .sub{max-width:640px;margin:22px auto 0;font-size:18px;font-style:italic;color:#b7ab99}
+  .hero .meta{margin-top:34px;font-family:ui-monospace,monospace;font-size:12px;color:#8d8271;letter-spacing:1px}
+  .hero .meta b{color:#c8a24a}
+
+  /* ===== Layout ===== */
+  main{max-width:680px;margin:0 auto;padding:56px 24px 40px}
+  section{margin-bottom:56px}
+  .secnum{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
+  h2{font-size:29px;line-height:1.25;font-weight:400;margin-bottom:20px}
+  p{margin-bottom:20px}
+  p.lead{font-size:21px;line-height:1.65}
+  p.lead::first-letter{initial-letter:3;-webkit-initial-letter:3;font-weight:700;color:var(--accent);margin-right:10px}
+  @supports not (initial-letter:3){ p.lead::first-letter{font-size:54px;float:left;line-height:.9;margin:4px 10px 0 0} }
+  blockquote{border-left:3px solid var(--accent);padding:6px 0 6px 24px;margin:30px 0;font-size:23px;line-height:1.5;font-style:italic;color:#403a33}
+  em{font-style:italic}
+  b,strong{font-weight:700}
+  .num{font-family:ui-monospace,monospace;font-size:.92em;background:#f0e9de;padding:1px 6px;border-radius:4px;white-space:nowrap}
+
+  /* ===== Kotak angka ===== */
+  .databox{background:#f3ede2;border:1px solid var(--rule);border-radius:10px;padding:26px 28px;margin:34px 0}
+  .databox h3{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:16px}
+  .databox dl{display:grid;grid-template-columns:1fr auto;gap:8px 20px;font-size:15.5px}
+  .databox dt{color:var(--dim)}
+  .databox dd{font-family:ui-monospace,monospace;font-weight:700;text-align:right}
+  .databox .src{margin-top:16px;font-size:12.5px;color:var(--dim);font-style:italic}
+
+  /* ===== Timeline ===== */
+  .tl{border-left:2px solid var(--rule);margin:34px 0 34px 8px;padding-left:26px}
+  .tl .ev{position:relative;margin-bottom:18px}
+  .tl .ev::before{content:'';position:absolute;left:-32.5px;top:9px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+  .tl .ev.hit::before{background:var(--accent)}
+  .tl time{font-family:ui-monospace,monospace;font-size:13.5px;font-weight:700;color:var(--accent2);display:block}
+  .tl .ev.hit time{color:var(--accent)}
+  .tl .d{font-size:15.5px;color:#3c362f}
+
+  /* ===== Dua kolom angka bentrok ===== */
+  .versus{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:34px 0;border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+  @media(max-width:620px){.versus{grid-template-columns:1fr}}
+  .versus>div{padding:22px 24px}
+  .versus>div:first-child{background:#f3ede2}
+  .versus>div:last-child{background:#ece4f0}
+  .versus h4{font-family:ui-monospace,monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  .versus h4.knkt{color:var(--accent2)} .versus h4.pol{color:#6b3fa0}
+  .versus li{margin:0 0 8px 18px;font-size:15.5px}
+
+  /* ===== Footer ===== */
+  footer{border-top:1px solid var(--rule);max-width:680px;margin:20px auto 0;padding:30px 24px 70px;font-size:13.5px;color:var(--dim);font-style:italic}
+  .nav{position:sticky;top:0;background:rgba(250,248,244,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);z-index:9}
+  .nav-in{max-width:680px;margin:0 auto;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;font-family:ui-monospace,monospace;font-size:12px}
+  .nav a{color:var(--accent2);text-decoration:none}
+  .nav a:hover{text-decoration:underline}
+  .nav .sim{background:var(--accent);color:#fff;padding:6px 14px;border-radius:20px}
+  .nav .sim:hover{text-decoration:none;filter:brightness(1.1)}
+</style>
+</head>
+<body>
+
+<div class="nav"><div class="nav-in">
+  <a href="#top">↑ Tiga Menit 48 Detik</a>
+  <a class="sim" href="../simulation/index.html">▶ Buka Simulasi Interaktif</a>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="kicker">Rekonstruksi Kecelakaan Perkeretaapian</div>
+  <h1>Tiga Menit Empat Puluh Delapan Detik</h1>
+  <p class="sub">Tragedi Bekasi Timur, 27 April 2026 — dan mengapa semuanya bermuara pada satu masinis</p>
+  <div class="meta">KA 4B Argo Bromo Anggrek × KA 5568A Commuter Line · Jalur I Km 28+915 · <b>16 meninggal · 107 luka</b></div>
+</header>
+
+<main>
+
+<section>
+  <p class="lead">Setiap kecelakaan besar selalu terlihat "tiba-tiba" bagi orang luar. Dalam investigasi keselamatan, hampir tidak pernah ada yang tiba-tiba.</p>
+  <p>Malam itu, 27 April 2026, KA 4B Argo Bromo Anggrek berangkat dari Gambir menuju Surabaya Pasar Turi, dan KA 5568A Commuter Line mengantre jalur yang sama di bekas stasiun kecil bernama Bekasi Timur. Keduanya memakai <b>jalur yang sama</b> — kenyataan yang sudah bertahun-tahun diterima sebagai wajar: kereta 120 km/jam dan kereta yang berhenti di setiap stasiun berbagi rel yang sama, dengan grafik perjalanan (GAPEKA) yang seharusnya menjaga jarak mereka.</p>
+  <p>Grafik itu malam itu tidak terpelihara. KNKT mencatat 5568A berangkat dari Stasiun Bekasi <span class="num">8 menit 32 detik lebih lambat</span> dari jadwal; Argo Bromo Anggrek justru berangkat <span class="num">3 menit 17 detik lebih awal</span>. Dua deviasi kecil yang tidak pernah dianggap berbahaya bergabung menjadi headway yang menyempit sampai sekitar dua menit. KNKT sendiri mensimulasikan: seandainya tidak ada gangguan apa pun, dua kereta itu masih bisa lewat satu sama lain. <em>Seandainya.</em></p>
+  <div class="tl">
+    <div class="ev"><time>20:48:24</time><div class="d">Taksi listrik ditemper KA 5181B di perlintasan JPL 86 — batu pertama rangkaian domino.</div></div>
+    <div class="ev"><time>20:48:55</time><div class="d">KA 5568A berhenti di Jalur I Bekasi Timur untuk turun-naikkan penumpang.</div></div>
+    <div class="ev"><time>20:49:24</time><div class="d">5568A berhenti lagi: kerumunan warga menutup jalur hulu arah Tambun.</div></div>
+    <div class="ev"><time>20:50:43</time><div class="d">KA 4B berjalan langsung dari Jalur III — sinyal keluar J12 menyala <b>hijau</b>.</div></div>
+    <div class="ev hit"><time>20:52:12</time><div class="d">Tabrakan. 40 km/jam. Akselerometer lokomotif berhenti mencatat.</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="secnum">II · Kereta yang hilang dari radar</div>
+  <h2>Informasi paling penting malam itu tidak pernah sampai</h2>
+  <p>Sebuah kereta yang berhenti tidak normal di tengah blok seharusnya menjadi informasi paling penting malam itu. Masinis 5568A melakukan yang seharusnya: menghubungi pusat kendali. Tetapi panggilan itu — seperti panggilan masinis 5181B sebelumnya — dilakukan lewat <b>tombol individual</b>, bukan tombol panggilan darurat. Tidak ada notifikasi yang muncul di konsol pengendali. Dan pos pengendali yang dia tuju, PPKP Selatan, saat itu sedang berjuang memahami laporan kereta lain: suara masinis 5181B pecah, volumenya kecil, microphone-nya tersangkut di dudukannya. Butuh <span class="num">3 menit 20 detik</span> hanya untuk menyampaikan satu informasi: <em>"kereta menabrak mobil."</em></p>
+  <p>Di sini sistem perkeretaapian Indonesia memperlihatkan celah yang tidak pernah terpikirkan banyak orang: <b>PPKP Selatan</b> melayani radio KRL, tetapi <b>PPKP Timur</b> yang mengendalikan perjalanan KA 4B — dan tidak ada prosedur yang memaksa keduanya bertukar informasi. Kereta 5568A tertahan di depan mata, tetapi tidak ada satu pun pengendali yang memiliki gambaran utuh tentangnya. Secara administratif, kereta itu masih "berjalan".</p>
+  <blockquote>Tiga lapis komunikasi gagal bersamaan — dan kereta yang paling penting malam itu menghilang dari radar.</blockquote>
+</section>
+
+<section>
+  <div class="secnum">III · Hijau yang berbohong</div>
+  <h2>Bukan salah masinisnya — perangkap tertanam sejak 2021</h2>
+  <p>Pukul 20:50:43, KA 4B melaju langsung dari Jalur III Stasiun Bekasi. Di depan masinis, <b>Sinyal Keluar J12 menyala hijau</b>.</p>
+  <p>Sebagai makhluk yang percaya sistem, masinis membaca hijau seperti semua masinis dibaca sejak sekolah perkeretaapian: jalur depan aman. Pemahaman yang ditanamkan pendidikan dan bertahun-tahun pengalaman itu berbunyi sederhana — <em>aspek merah selalu didahului kuning.</em></p>
+  <p>Yang masinis tidak tahu: dalam desain persinyalan Bekasi–Bekasi Timur, sinyal keluar J12 <b>tidak perduli</b> apakah jalur di Bekasi Timur terduduki atau tidak. Bahaya ini tidak diciptakan malam itu — ia tertanam sejak perubahan tata letak stasiun 2021, lolos dari review desain 2022 yang menggambar aspek sinyal "sinyal-ke-sinyal tanpa status okupasi track", lolos dari pengujian, dan tidak pernah terdeteksi selama ±5 tahun operasi. Sebuah perangkap yang tidak pernah diberitahukan ke orang-orang yang berjalan di atasnya.</p>
+  <p>Ada satu penjaga terakhir sebelum sinyal merah: Sinyal Pembantu UB104 — cahaya putih kecil yang seharusnya "meneriakkan" status B104 dari kejauhan. Malam itu UB104 menampilkan aspek yang benar (putih horisontal = sinyal utama tidak aman). Tetapi aspek yang benar bukan berarti peringatan yang diterima. Di sekelilingnya, lampu rumah warga dan penerangan jalan berkedip dengan warna dan intensitas yang sama. Dan kaca depan lokomotif — polycarbonate penuh goresan wiper, pilihan material seluruh lokomotif KAI sejak nota dinas 2015 — menyebarkan setiap sumber cahaya menjadi bulatan pendar. Dari dalam kabin CC206 malam itu, dunia luar adalah kumpulan cahaya yang tidak jelas bentuknya.</p>
+  <p>KNKT menulisnya dengan tenang: kombinasi itu "menurunkan efektivitas" UB104. Terjemahannya: peringatan terakhir itu tidak pernah sampai sebagai peringatan.</p>
+</section>
+
+<section>
+  <div class="secnum">IV · Lima puluh enam detik</div>
+  <h2>Fisika tidak bernegosiasi</h2>
+  <p>Pukul 20:51:06–20:51:18, asisten masinis KA 4B menerima informasi dari PPKP Timur tentang kecelakaan di jalur hilir. Frasanya sepele: <em>"direm-rem dikit."</em> Tanpa urgensi. Tanpa penjelasan ada kereta berhenti di depan.</p>
+  <p>Masinis melakukan yang wajar: pengereman ringan. Kecepatan 108 km/jam. Pukul 20:51:33, asisten masinis melapor: <b>sinyal B104 merah</b>. Satu detik kemudian tuas rem ditarik ke full service. Di kabin, keputusan yang tidak akan pernah dipahami orang-orang di luar sedang diambil: kereta sedang melintasi lengkung radius 946 meter, dan masinis tahu — dari pemahaman yang ditanamkan pasal 40 PD 16A — bahwa rem darurat di kecepatan tinggi di lengkung bisa membuat rangkaian lipat dan terguling (<em>jackknifing</em>). Ia memilih full service dulu, emergency setelah keluar lengkung.</p>
+  <p>Yang tidak pernah dia dapatkan — dan inilah salah satu temuan paling menyakitkan KNKT — adalah <b>pelatihan</b> untuk keputusan semacam itu, atau <b>prosedur</b> yang menuliskan taktiknya. Ia menebak sendiri, dalam hitungan detik, dengan ratusan nyawa di belakang punggungnya.</p>
+  <p>Pukul 20:51:56, kereta keluar lengkung. Rem darurat ditarik: 275 meter dari titik tabrakan, 78 km/jam. Rem bekerja <b>persis seperti dirancang</b> — KNKT menegaskan itu. Tetapi fisika tidak bernegosiasi.</p>
+
+  <div class="databox">
+    <h3>Angka dari data logger lokomotif</h3>
+    <dl>
+      <dt>Kecepatan saat peringatan pertama terlihat (B104 merah)</dt><dd>105 km/jam</dd>
+      <dt>Dekelerasi full service (aktual)</dt><dd>−0,35 m/s²</dd>
+      <dt>Dekelerasi emergency brake</dt><dd>−0,66 m/s²</dd>
+      <dt>Jarak henti dengan pola rem aktual</dt><dd>±845 m</dd>
+      <dt>Jarak tersedia saat full service ditarik</dt><dd>±837 m</dd>
+      <dt>Kecepatan benturan</dt><dd>40 km/jam</dd>
+      <dt>Seretan pasca benturan</dt><dd>26 m</dd>
+    </dl>
+    <div class="src">Sumber: KNKT.26.04.03.02, perhitungan hlm. 70–72 dan temuan hlm. 84.</div>
+  </div>
+
+  <p>Dengan pola rem malam itu, kereta membutuhkan <span class="num">±845 meter</span> untuk berhenti dari 105 km/jam. Tersedia 837. Pukul 20:52:12, lokomotif menabrak ekor KA 5568A dengan 40 km/jam. Rangkaian terseret 26 meter. <b>Enam belas orang meninggal. Semuanya penumpang KRL.</b></p>
+</section>
+
+<section>
+  <div class="secnum">V · Angka yang berbeda</div>
+  <h2>Dua narasi dalam dua hari</h2>
+  <p>Lima bulan kemudian, dalam kurungan waktu yang hampir berselingan, publik menerima dua narasi.</p>
+  <div class="versus">
+    <div>
+      <h4 class="knkt">KNKT — 28–29 September</h4>
+      <ul>
+        <li>Enam faktor berkontribusi: persinyalan, komunikasi tiga lapis, visibilitas sinyal, prosedur yang tidak ada.</li>
+        <li>Rem darurat di ±275 m, 78 km/jam; benturan 40 km/jam.</li>
+        <li>Butuh ±845 m dari 105 km/jam (pola aktual).</li>
+        <li>Rekomendasi ke DJKA, KAI, KCI — tanpa satu pun menyebut nama masinis.</li>
+        <li>"Bukan penetapan kesalahan administratif, perdata, atau pidana."</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="pol">Polda Metro Jaya — 29 September</h4>
+      <ul>
+        <li>Satu tersangka: masinis AN, 37 tahun.</li>
+        <li>Rem darurat "terlambat": ditekan di ±263 m.</li>
+        <li>"Teori Minden": kereta mampu berhenti 600 m; KRL terlihat dari 1 km.</li>
+        <li>Jerat KUHP &amp; UU Perkeretaapian — ancaman 5–12 tahun.</li>
+        <li>54 saksi; ahli perkeretaapian, lokomotif, persinyalan, forensik.</li>
+      </ul>
+    </div>
+  </div>
+  <p>Angka-angka itu tidak saling bicara. Perhitungan KNKT dari data logger: <span class="num">845 m</span> dibutuhkan; <span class="num">1.286 m</span> dengan full service saja; <span class="num">1.429 m</span> bila mengikuti ambang kenyamanan penumpang ISO 2631. "Teori Minden 600 meter" — beserta asumsi geometri, kondisi rel, komposisi rangkaian di dalamnya — belum dibuka untuk direkonsiliasi dengan data logger yang sama-sama dipakai kedua pihak.</p>
+  <p>Yang bisa dipastikan dari fisika saja adalah ini: <b>sejak masinis melihat B104 merah, jendela untuk menghindarkan tabrakan itu nyaris tertutup</b> — margin 18 meter bila ia langsung menarik emergency dengan pola rem yang sama. Untuk memiliki jendela yang lebar, ia seharusnya mendapat peringatan jauh lebih awal: kuning di J12 yang tidak pernah dipasang, sinyal pembantu yang tidak terbaca, instruksi pengendali yang tidak pernah datang. KNKT menghitung: seandainya kuning tersedia sebagaimana prinsip tiga-aspek yang normal, kereta berhenti dengan nyaman <span class="num">352 meter sebelum sinyal</span> — tanpa rem darurat, tanpa drama, tanpa judul surat kabar.</p>
+</section>
+
+<section>
+  <div class="secnum">VI · Siapa yang mengendarai siapa</div>
+  <h2>Sistem gagal enam lapis, tuntutan untuk satu orang</h2>
+  <p>Maka muncul pertanyaan yang akan diperdebatkan di ruang sidang dan ruang kuliah hukum: ketika sebuah sistem gagal enam lapis secara bersamaan, apakah masuk akal menggugat satu orang yang berdiri di ujung terakhir rantai itu — orang yang mendapat informasi salah dari sinyal, informasi kosong dari pengendali, pelatihan nol untuk dilema yang dihadapinya?</p>
+  <p>KNKT menemukan bahwa bahaya persinyalan itu <b>tertulis di dokumen desain sejak 2022</b> — digambar dengan cara yang membuatnya tidak terlihat. Laporan itu merekomendasikan pengawasan independen (<em>Independent Safety Assessor</em>) untuk sistem persinyalan — pengakuan halus bahwa selama ini tidak ada yang memeriksanya. Ia merekomendasikan evaluasi beban kerja pengendali yang menatap belasan layar dan mendengar beberapa radio sekaligus. Ia merekomendasikan prosedur dan pelatihan rem darurat — pengakuan bahwa yang malam itu memutuskan sendirian adalah manusia yang tidak pernah dilatih untuk keadaan itu.</p>
+  <p>Komisi V DPR RI menegaskan penyelidikan <b>jangan berhenti di masinis</b>. Komisi III meminta proses hukum yang transparan. Pengamat hukum menyebut penetapan tersangka prematur. KAI menghormati proses hukum — dan mengganti nama keretanya: Argo Bromo Anggrek kini menjadi KA Anggrek, seolah nama bisa mengubur sejarah.</p>
+</section>
+
+<section>
+  <div class="secnum">VII · Apa yang sesungguhnya bisa diselamatkan</div>
+  <h2>Just culture</h2>
+  <p>Investigasi keselamatan dan hukum pidana memang menjawab pertanyaan berbeda. Yang satu bertanya bagaimana sistem gagal; yang lain bertanya siapa yang dapat dipertanggungjawabkan. Masalah muncul ketika yang kedua menjawab lebih cepat daripada yang pertama, dengan angka yang belum direkonsiliasi, atas latar sistem yang baru saja dibuktikan rusak.</p>
+  <p>Ada dua hal yang data logger mengetahui dengan pasti dan tidak akan berubah oleh sidang mana pun. Pertama: kereta itu bisa saja tidak tabrakan — <b>tiga kali, di tiga lapisan berbeda</b>, jika tiga sistem yang berbeda melakukan tugasnya. Kedua: manusia di kabin itu menghabiskan lima puluh enam detik terakhir dengan mengambil serangkaian keputusan yang — dilihat dari dalam kabin, dengan cahaya yang ia lihat dan suara yang ia dengar — masuk akal; dan dilihat dari luar, enam bulan kemudian, dengan semua data dan semua fakta yang tidak pernah ia miliki, terlihat seperti kesalahan.</p>
+  <blockquote>Perbedaan antara dua kalimat itu adalah seluruh perdebatan tentang keadilan dalam kecelakaan.</blockquote>
+  <p>Sejarah perkeretaapian dunia mengenal jawabannya dengan nama yang sederhana: <em>just culture</em> — kebudayaan yang membedakan orang yang membuat kesalahan dari sistem yang mempersenjatai kesalahan itu. Malam 27 April 2026 tidak akan pernah bisa dibatalkan. Tetapi pilihan apakah Indonesia menuntut orang terakhir yang menyentuh bencana itu, atau memperbaiki semua tangan yang menyusunnya — itu masih terbuka, dan masih bisa dipilih.</p>
+</section>
+
+</main>
+
+<footer>
+  Angka teknis: laporan akhir KNKT.26.04.03.02 (temuan hlm. 79–85, faktor berkontribusi hlm. 86–89, perhitungan hlm. 70–72, transkripsi komunikasi lampiran 4). Penetapan tersangka: konferensi pers Ditreskrimum Polda Metro Jaya, 29 September 2026. Reaksi lembaga: pernyataan Komisi V &amp; III DPR, KAI, dan pemberitaan media 29 September–1 Oktober 2026. Analisis counterfactual memakai dekelerasi rata-rata dari data logger dan dapat direproduksi di <a href="../simulation/index.html" style="color:var(--accent2)">simulasi interaktif</a> proyek ini.
+</footer>
+
+</body>
+</html>

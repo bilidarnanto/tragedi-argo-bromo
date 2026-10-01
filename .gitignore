@@ -1,0 +1,5 @@
+# dependensi & toolchain lokal (tidak masuk repo)
+.tools/node_modules/
+.tools/gitenv/
+.tools/mamba/
+.tools/package-lock.json

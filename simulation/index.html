@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulasi Tragedi Bekasi Timur — KA 4B Argo Bromo Anggrek × KA 5568A (27 April 2026)</title>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#111823; --panel2:#0e141d; --line:#1f2b3a;
+    --txt:#d7e2ee; --dim:#8296ab; --amber:#ffb547; --red:#ff5252; --green:#3ddc84;
+    --cyan:#4dd0e1; --violet:#b388ff; --white:#f2f6fa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font:14px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;padding:18px}
+  .wrap{max-width:1240px;margin:0 auto}
+  header h1{font-size:21px;letter-spacing:.3px}
+  header h1 b{color:var(--amber)}
+  header p{color:var(--dim);font-size:12.5px;margin-top:3px}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:14px;margin-top:14px}
+  @media(max-width:1000px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .panel h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:10px}
+  label{display:block;font-size:11.5px;color:var(--dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.6px}
+  select,input[type=range],input[type=number]{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--txt);padding:8px;border-radius:6px;font-size:14px}
+  input[type=range]{padding:0;accent-color:var(--amber)}
+  .btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  button{flex:1;min-width:90px;padding:9px 10px;border:none;border-radius:7px;cursor:pointer;font-weight:600;font-size:13.5px}
+  #btnPlay{background:var(--green);color:#04140a}
+  #btnReset{background:#2a3948;color:var(--txt)}
+  #btnStep{background:#2a3948;color:var(--txt)}
+  canvas{width:100%;background:#070b10;border:1px solid var(--line);border-radius:10px;display:block}
+  #hud{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:118px}
+  .stat .v{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .k{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.7px}
+  #eventLog{max-height:230px;overflow-y:auto;font-size:12.5px}
+  #eventLog div{padding:4px 0;border-bottom:1px dashed var(--line)}
+  #eventLog .t{color:var(--cyan);font-variant-numeric:tabular-nums;display:inline-block;min-width:84px}
+  #verdict{margin-top:12px;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);font-size:13px}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--dim);margin-top:8px}
+  .info-grid b{color:var(--txt)}
+  .lg{font-size:12px;margin-top:10px;line-height:1.7}
+  .chip{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:700;margin-right:6px}
+  .c-green{background:#123b26;color:var(--green)} .c-red{background:#3b1414;color:var(--red)}
+  .c-white{background:#2e3644;color:var(--white)} .c-amber{background:#3b2c10;color:var(--amber)}
+  .note{color:var(--dim);font-size:11.5px;margin-top:8px}
+  .sig{display:inline-flex;flex-direction:column;align-items:center;gap:2px;margin-right:10px;font-size:11px;color:var(--dim)}
+  .lamp{width:16px;height:16px;border-radius:50%;background:#1b2531;border:1px solid #2c3a4a}
+  .lamp.on-g{background:var(--green);box-shadow:0 0 10px var(--green)}
+  .lamp.on-r{background:var(--red);box-shadow:0 0 10px var(--red)}
+  .lamp.on-w{background:var(--white);box-shadow:0 0 10px var(--white)}
+  /* ==== Garis waktu, hint, sensitivitas ==== */
+  .hint{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.6}
+  .sens-row{display:grid;grid-template-columns:1fr 84px 200px 64px;gap:8px;align-items:center;padding:7px 10px;
+            border:1px solid var(--line);border-radius:8px;margin-bottom:6px;background:var(--panel2)}
+  .sens-row .bar{height:12px;border-radius:6px;background:linear-gradient(90deg,#1d5c3c,var(--green))}
+  .sens-row .bar.red{background:linear-gradient(90deg,#7a1f1f,var(--red))}
+  .sens-row .lab{font-size:12px}
+  .sens-row .val{font-size:12px;font-weight:700;text-align:right;white-space:nowrap}
+  .sens-row button{min-width:0;flex:none;padding:5px 8px;font-size:11px;background:#2a3948;color:var(--txt)}
+  .sens-head{display:grid;grid-template-columns:1fr 84px 200px 64px;gap:8px;font-size:10.5px;color:var(--dim);
+             text-transform:uppercase;letter-spacing:.6px;padding:0 10px 4px}
+  .chainwrap{margin-top:14px}
+  .chaingrid{display:grid;grid-template-columns:1fr 360px;gap:14px}
+  @media(max-width:1000px){.chaingrid{grid-template-columns:1fr}}
+  .chainflow{max-height:560px;overflow-y:auto;padding-right:6px}
+  .cnode{position:relative;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+         padding:9px 12px;cursor:pointer;transition:border-color .15s, background .15s}
+  .cnode:hover{border-color:var(--cyan)}
+  .cnode.sel{border-color:var(--amber);background:#1a2230}
+  .cnode .cid{font-weight:700;color:var(--cyan);margin-right:8px;font-size:12px}
+  .cnode .clbl{font-size:13px}
+  .cnode .ctag{position:absolute;right:8px;top:8px;display:flex;gap:4px}
+  .fchip{display:inline-block;padding:1px 7px;border-radius:9px;font-size:10px;font-weight:700;
+         background:#243447;color:var(--cyan);border:1px solid #31465e}
+  .fchip.sel{background:var(--cyan);color:#04222a}
+  .dchip{display:inline-block;padding:1px 7px;border-radius:9px;font-size:10px;font-weight:700}
+  .d-ok{background:#123b26;color:var(--green)} .d-fail{background:#3b1414;color:var(--red)}
+  .d-none{background:#3b2c10;color:var(--amber)}
+  .arrow{width:2px;height:16px;background:#2c3a4a;margin:2px auto}
+  .arrow:after{content:'';display:block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+               border-top:6px solid #2c3a4a;margin:-1px 0 0 -4px}
+  #chainDetail{font-size:13px}
+  #chainDetail h3{margin:2px 0 8px;font-size:15px;color:var(--amber)}
+  #chainDetail .meta{color:var(--dim);font-size:11.5px;margin-bottom:8px}
+  #chainDetail .box{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px;margin-top:8px}
+  #chainDetail ul{margin:6px 0 0 18px}
+  #chainDetail li{margin-bottom:3px}
+  /* ==== Peta Rantai Kejadian ==== */
+  .legend .dchip{vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Simulasi Tragedi <b>Bekasi Timur</b> — KA 4B Argo Bromo Anggrek × KA 5568A</h1>
+    <p>27 April 2026, 20:52 WIB · Jalur I Km 28+915 · Fisika berbasis data logger lokomotif &amp; laporan akhir KNKT.26.04.03.02 · Pemodelan edukatif, bukan penilaian hukum</p>
+  </header>
+
+  <div class="grid">
+    <div>
+      <div class="panel">
+        <h2>Lintasan &amp; Sinyal</h2>
+        <canvas id="cv" width="1180" height="430"></canvas>
+        <div id="hud">
+          <div class="stat"><div class="v" id="stClock">20:50:43</div><div class="k">Waktu (master)</div></div>
+          <div class="stat"><div class="v" id="stSpeed">108</div><div class="k">km/jam</div></div>
+          <div class="stat"><div class="v" id="stDist">2256</div><div class="k">m ke titik tabrak</div></div>
+          <div class="stat"><div class="v" id="stKm">26+659</div><div class="k">Posisi (km)</div></div>
+          <div class="stat"><div class="v" id="stBrake">—</div><div class="k">Status rem</div></div>
+          <div class="stat"><div class="v" id="stDecel">0</div><div class="k">m/s² perlambatan</div></div>
+        </div>
+        <div class="lg" id="lampBox">
+          <span class="sig"><span class="lamp" id="lampJ12"></span>J12</span>
+          <span class="sig"><span class="lamp" id="lampUB"></span>UB104</span>
+          <span class="sig"><span class="lamp" id="lampB104"></span>B104</span>
+          <span class="chip c-amber" id="phaseChip">FASE: siap</span>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <h2>Log Kejadian</h2>
+        <div id="eventLog"></div>
+        <div id="verdict">—</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>Kontrol Skenario</h2>
+        <label>Skenario</label>
+        <select id="selScenario">
+          <option value="A">A — Kejadian aktual (sesuai data logger)</option>
+          <option value="B">B — Rem darurat sejak B104 merah (837 m)</option>
+          <option value="C">C — Kuning tersedia di J12 (rem nyaman ISO 2631)</option>
+          <option value="E">E — Kustom: pilih titik &amp; pola rem</option>
+        </select>
+        <p class="note" id="scenNote"></p>
+        <div id="customBox" style="display:none">
+          <label>Mulai mengerem (m sebelum titik tabrak): <b id="lblStart">900</b></label>
+          <input type="range" id="rStart" min="400" max="1315" step="5" value="900">
+          <label>Pola pengereman</label>
+          <select id="selProfile">
+            <option value="FS">Full service saja (−0,35 m/s²)</option>
+            <option value="FSEB">Full service → darurat di 275 m</option>
+            <option value="EB">Darurat langsung (−0,66 m/s²)</option>
+          </select>
+        </div>
+        <label>Kecepatan tayang</label>
+        <select id="selSpeed">
+          <option value="0.25">0,25×</option>
+          <option value="0.5">0,5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+        </select>
+        <label>View</label>
+        <select id="selView">
+          <option value="follow" selected>Otomatis (ikuti kereta)</option>
+          <option value="full">Jangkauan penuh (J12 → titik tabrak)</option>
+          <option value="near">600 m terakhir</option>
+        </select>
+        <label>Garis waktu (dtk dari awal skenario)</label>
+        <input type="range" id="rTime" min="0" max="130" step="0.5" value="0">
+        <div class="btns">
+          <button id="btnPlay" title="Spasi">▶ Jalankan</button>
+          <button id="btnStep" title="Maju 0,05 dtk">⏭ Langkah</button>
+          <button id="btnReset" title="R">↺ Ulang</button>
+        </div>
+        <div class="hint">Pintasan: <b>Spasi</b> jeda/jalan · <b>←/→</b> mundur/maju 5 dtk · <b>R</b> ulang · seret garis waktu untuk melompat.</div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <h2>Data Fisika (KNKT)</h2>
+        <div class="info-grid">
+          <span>Full service</span><b>−0,35 m/s²</b>
+          <span>Emergency</span><b>−0,66 m/s²</b>
+          <span>ISO 2631 nyaman</span><b>−0,315 m/s²</b>
+          <span>Rata-rata kejadian</span><b>−0,505 m/s²</b>
+          <span>J12 → B104</span><b>1.781 m</b>
+          <span>B104 → tabrakan</span><b>475 m</b>
+          <span>Radius lengkung</span><b>946 m</b>
+          <span>V kejadian</span><b>108 km/jam</b>
+          <span>V benturan (aktual)</span><b>40 km/jam</b>
+          <span>Terseret pasca benturan</span><b>26 m</b>
+          <span>Model vs logger</span><b>deviasi ±5 km/jam</b>
+        </div>
+        <p class="note">Skenario B: rem darurat murni (−0,66) dari 105 km/jam → berhenti ±190 m sebelum titik tabrak. Dengan pola aktual (−0,505): butuh ±845 m > tersedia ±837 m (KNKT: berhenti ±29 m setelah titik tabrakan). Skenario C: butuh 1.429 m, tersedia 2.256 m sejak J12. Model memakai perlambatan rata-rata per fase (dekelerasi logger tidak seragam) → kecepatan benturan model bisa beda beberapa km/jam dari logger.</p>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <h2>Kronologi Inti (master time)</h2>
+        <div class="lg" style="font-size:12px">
+          20:48:24 — KRL 5181B × taksi listrik di JPL 86 (pemicu)<br>
+          20:48:55 — KA 5568A berhenti di Jalur I Bekasi Timur<br>
+          20:50:43 — KA 4B jalan langsung dari Jalur III (J12 hijau)<br>
+          20:51:16 — mulai minimum reduction (info PPKP Timur)<br>
+          20:51:34 — full service (melihat B104 merah)<br>
+          20:51:56 — emergency brake di 275 m / 78 km/jam<br>
+          20:52:12 — <b style="color:var(--red)">TABRAKAN</b> di 40 km/jam<br>
+          20:52:19 — KA 4B berhenti di Km 28+941
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== PETA RANTAI KEJADIAN INTERAKTIF ====== -->
+  <div class="panel chainwrap">
+    <h2>Peta Rantai Kejadian — Klik Simpul / Chip Faktor untuk Detail</h2>
+    <div class="chaingrid">
+      <div class="chainflow" id="chainFlow"></div>
+      <div id="chainDetail"><p class="note">Pilih salah satu simpul (C1–C12) atau chip faktor (F1–F6) untuk melihat penjelasan, lapisan pertahanan terkait, dan rujukan KNKT.</p></div>
+    </div>
+    <div class="legend">
+      <span><span class="dchip d-ok">berfungsi</span> lapisan pertahanan bekerja</span>
+      <span><span class="dchip d-fail">gagal</span> ada tetapi tidak berfungsi</span>
+      <span><span class="dchip d-none">tidak ada</span> lapisan tidak pernah disediakan sistem</span>
+      <span>F1–F6 = faktor berkontribusi versi KNKT</span>
+    </div>
+  </div>
+
+  <!-- ====== ANALISIS SENSITIVITAS ====== -->
+  <div class="panel chainwrap">
+    <h2>Analisis Sensitivitas — Jika Hanya Satu Faktor Dipulihkan</h2>
+    <p class="note">Pertanyaan kunci: apakah memulihkan <b>satu</b> lapisan saja (faktor lain tetap gagal) sudah cukup mencegah tabrakan? Hitungan kinematika dari parameter logger KNKT; klik “uji” untuk memuatnya ke simulasi utama.</p>
+    <div class="sens-head"><span>Konfigurasi</span><span>Margin</span><span>Kesenjangan visual</span><span></span></div>
+    <div id="sensRows"></div>
+    <div class="btns"><button id="btnSens" style="background:#2a3948;color:var(--txt)">↻ Hitung ulang</button></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// ===== Referensi geometri (x = jarak ke titik tabrakan, negatif = belum sampai) =====
+// Referensi jarak: ke titik tabrakan (Km 28+915). Catatan KNKT memakai dua acuan:
+// titik berhenti (Km 28+941) dan titik tabrakan — km 28+078 (full service) = 863 m dari
+// titik berhenti = 837 m dari titik tabrakan. Koordinat EB konsisten: Km 28+640 = 275 m.
+const X = { j12:-2256, ub:-885, b104:-475, bvis:-870, curveIn:-1517, curveOut:-1230, jpl85:-275, impact:0, stop:+26 };
+const KM0 = 28.915; // km titik tabrakan
+
+// ===== Data KNKT =====
+const DEC = { FS:0.35, EB:0.66, COMFORT:0.315, AVG:0.505 };
+const V0 = 108/3.6; // 30 m/s
+const fs = (m)=>m.toFixed(0);
+
+// Fase kejadian aktual (x, v m/s, a m/s^2) — hasil kalibrasi ke logger:
+// 108→105 antara -1315..-863; 105→79 antara -863..-322; 78→~40 antara -275..0
+const SCEN = {
+  A:{ name:'A — Kejadian aktual', phases:[
+        {x:-1315, v:30.0, a:-0.05},
+        {x:-837,  v:29.17,a:-0.35},
+        {x:-275,  v:21.67,a:-0.66} ], t0:'20:51:16' },
+  B:{ name:'B — Darurat sejak B104', phases:[
+        {x:-837,  v:29.17,a:-0.66} ], t0:'20:51:34' },
+  C:{ name:'C — Kuning di J12 (nyaman)', phases:[
+        {x:-2256, v:30.0, a:-0.315} ], t0:'20:50:43' },
+  E:{ name:'E — Kustom', phases:[] , t0:'20:51:00' }
+};
+
+// Pesan-pesan timeline (per skenario A tampil dengan jam master)
+const MSG = {
+  A:[
+    {t:-172, s:'20:48:24', txt:'KRL 5181B menabrak taksi listrik di JPL 86 (peristiwa pemicu, jalur hilir)'},
+    {t:-141, s:'20:48:55', txt:'KA 5568A berhenti di Jalur I Bekasi Timur (naik-turun penumpang)'},
+    {t:-133, s:'20:49:03', txt:'5568A tertahan: kerumunan warga di jalur hulu — info tak sampai ke PPKP'},
+    {t:-33,  s:'20:50:43', txt:'KA 4B berjalan langsung Jalur III — J12 hijau, tanpa kuning'},
+    {t:0,    s:'20:51:16', txt:'Info dari PPKP Timur → rem minimum reduction (BP 71→65 psi)'},
+    {t:17,   s:'20:51:33', txt:'ASP lapor ke PPKP Timur: "B104 merah"'},
+    {t:18,   s:'20:51:34', txt:'Full service ditarik (BP 62→49 psi) — mulai melihat B104 merah'},
+    {t:40,   s:'20:51:56', txt:'EMERGENCY BRAKE di 275 m / 78 km/jam — setelah keluar lengkung'},
+    {t:47,   s:'20:52:03', txt:'Rem independen diaktifkan di 163 m / 65 km/jam (tanpa efek tambahan)'},
+    {t:56,   s:'20:52:12', txt:'★ TABRAKAN dengan KA 5568A di Jalur I, Km 28+915'}
+  ],
+  generic:[
+    {t:0,  s:'T+0s',   txt:'Simulasi dimulai sesuai skenario terpilih'},
+  ]
+};
+
+// ===== State =====
+let sim, raf=null, playing=false, lastTs=0, logIdx=0, simT=0, done=false;
+const $ = (id)=>document.getElementById(id);
+const cv=$('cv'), ctx=cv.getContext('2d');
+
+function buildScenario(){
+  const key=$('selScenario').value;
+  const s = JSON.parse(JSON.stringify(SCEN[key]));
+  s.key=key;
+  if(key==='E'){
+    const start=-parseInt($('rStart').value,10);
+    const prof=$('selProfile').value;
+    if(prof==='FS')       s.phases=[{x:start,v:V0,a:-DEC.FS}];
+    else if(prof==='EB')  s.phases=[{x:start,v:V0,a:-DEC.EB}];
+    else { s.phases=[{x:start,v:V0,a:-DEC.FS},{x:-275,v:null,a:-DEC.EB}]; }
+  }
+  // isi v fase lanjutan dari fisika fase sebelumnya
+  for(let i=1;i<s.phases.length;i++){
+    const p=s.phases[i-1], q=s.phases[i];
+    const dv2 = p.v*p.v - 2*Math.abs(p.a)*(p.x-q.x);
+    q.v = dv2>0 ? Math.sqrt(dv2) : 0;
+  }
+  return s;
+}
+
+function reset(){
+  cancelAnimationFrame(raf); playing=false; done=false;
+  sim=buildScenario();
+  sim.x=sim.phases[0].x; sim.v=sim.phases[0].v;
+  sim.phase=0; simT=0; logIdx=0;
+  $('btnPlay').textContent='▶ Jalankan';
+  $('eventLog').innerHTML='';
+  $('verdict').innerHTML='—';
+  $('phaseChip').textContent='FASE: siap';
+  setLamps(null,null,null);
+  updHUD();
+  // seed log awal
+  const base = SCEN[sim.key].t0;
+  logLine(base, '—', 'Skenario '+sim.name);
+  updScenNote();
+  if(sim.key==='B') logLine(base,'PREMIS','Masinis langsung menarik rem darurat begitu melihat B104 merah (±837 m, 105 km/jam)','c-amber');
+  if(sim.key==='C') logLine(base,'PREMIS','Sistem 3-aspek normal: J12 menampilkan KUNING — antisipasi sejak Km 26+659','c-amber');
+}
+
+function logLine(clock, tag, txt, cls){
+  const d=document.createElement('div');
+  d.innerHTML='<span class="t">'+clock+'</span><span class="chip '+(cls||'c-white')+'">'+tag+'</span> '+txt;
+  $('eventLog').appendChild(d);
+  $('eventLog').scrollTop=1e9;
+}
+
+function addSec(hms, s){
+  const [h,m,sec]=hms.split(':').map(Number);
+  let t=h*3600+m*60+sec+Math.round(s);
+  t=(t+86400)%86400;
+  const p=(n)=>String(n).padStart(2,'0');
+  return p(Math.floor(t/3600))+':'+p(Math.floor(t%3600/60))+':'+p(t%60);
+}
+
+function fmtKm(x){ const km=KM0 + x/1000; const w=Math.floor(km), f=Math.round((km-w)*1000); return w+'+'+String(f).padStart(3,'0'); }
+
+function setLamps(g,r,w){
+  $('lampJ12').className='lamp'+(g?' on-g':'');
+  $('lampB104').className='lamp'+(r?' on-r':'');
+  $('lampUB').className='lamp'+(w?' on-w':'');
+}
+
+function updHUD(){
+  $('stClock').textContent = addSec(SCEN[sim.key].t0, simT);
+  $('stSpeed').textContent = fs(sim.v*3.6);
+  $('stDist').textContent  = fs(Math.max(0,-sim.x));
+  $('stKm').textContent    = fmtKm(sim.x);
+  const names=['—','MIN REDUCTION','FULL SERVICE','EMERGENCY','KOMFORT (ISO)','HENTI','TABRAKAN'];
+  $('stBrake').textContent = names[sim.brakeLabel||0];
+  $('stDecel').textContent = (sim.curA?Math.abs(sim.curA):0).toFixed(2);
+  const nm=['—','MIN REDUCTION','FULL SERVICE','EMERGENCY','KOMFORT (ISO)','HENTI','TABRAKAN'];
+  if(!done) $('phaseChip').textContent='FASE: '+nm[sim.brakeLabel||0];
+  syncTimeline();
+}
+
+function verdict(html){ $('verdict').innerHTML=html; }
+
+// ===== Loop =====
+function tick(ts){
+  if(!playing) return;
+  const mult=parseFloat($('selSpeed').value);
+  const dt=Math.min(0.05,(ts-lastTs)/1000)*mult; lastTs=ts;
+  step(dt);
+  draw();
+  if(!done) raf=requestAnimationFrame(tick);
+}
+
+function step(dt){
+  if(done) return;
+  simT+=dt;
+  const p=sim.phases[sim.phase];
+  sim.curA=p.a;
+  const vPrev=sim.v;
+  sim.v += p.a*dt;
+  sim.x += (vPrev+sim.v)/2*dt;
+
+  // status rem (mengikuti fase aktif — benar untuk semua skenario)
+  const aNow=sim.phases[sim.phase].a;
+  sim.brakeLabel = aNow===-DEC.EB?3 : aNow===-DEC.FS?2 : aNow===-DEC.COMFORT?4 : 1;
+
+  // pesan timeline (skenario A) berdasarkan waktu
+  if(sim.key==='A'){
+    while(logIdx<MSG.A.length && simT>=MSG.A[logIdx].t){
+      const m=MSG.A[logIdx++];
+      logLine(m.s, 'KEJADIAN', m.txt, m.t===56?'c-red':'c-amber');
+    }
+  }
+  // penanda sinyal
+  if(!sim.passJ12 && sim.x<=X.j12){ sim.passJ12=1; if(sim.key!=='A') logLine(addSec(SCEN[sim.key].t0,simT),'SINYAL','Melewati J12'); }
+  if(!sim.passUB && sim.x<=X.ub){ sim.passUB=1; logLine(addSec(SCEN[sim.key].t0,simT),'SINYAL','UB104: putih horisontal = sinyal utama tidak aman'+(sim.key==='A'?' (TIDAK teridentifikasi masinis)':' (teridentifikasi)'),'c-white'); }
+  const profKey = sim.key==='E' ? $('selProfile').value : (sim.key==='A' ? 'FSEB' : 'EB');
+  const b104Action = profKey==='EB' ? 'rem darurat langsung' : 'mulai full service';
+  if(!sim.passB104 && sim.x<=X.bvis){ sim.passB104=1; logLine(addSec(SCEN[sim.key].t0,simT),'SINYAL','B104 terlihat MERAH (jarak tampak ±410 m) — '+b104Action, 'c-red'); }
+  if(!sim.passEB && sim.phases[sim.phase].a===-DEC.EB && (sim.phase===0 || sim.phases[sim.phase-1].a!==-DEC.EB)){ sim.passEB=1; logLine(addSec(SCEN[sim.key].t0,simT),'REM','EMERGENCY BRAKE di '+fs(-sim.x)+' m / '+(sim.v*3.6).toFixed(0)+' km/jam'); }
+
+  // transisi fase: fase aktif ditentukan oleh zona posisi (bukan lompatan beruntun).
+  // Zone fase i = [phases[i].x, phases[i+1].x); ambil indeks terbesar yang start-nya <= x.
+  for(let i=sim.phases.length-1;i>=0;i--){
+    if(sim.phases[i].x<=sim.x+1e-6){ sim.phase=i; break; }
+  }
+
+  // kondisi akhir
+  if(sim.v<=0 && sim.x<0){
+    sim.v=0; done=true; playing=false;
+    const margin=fs(-sim.x);
+    logLine(addSec(SCEN[sim.key].t0,simT),'HENTI','Kereta BERHENTI '+margin+' m sebelum titik tabrakan (Km '+fmtKm(sim.x)+')','c-green');
+    $('phaseChip').textContent='FASE: BERHENTI AMAN';
+    let extra='';
+    if(sim.key==='B') extra=' Dengan pola pengereman aktual (−0,505 m/s²) dari 105 km/jam butuh ±845 m > tersedia ±837 m — tetap tabrak tipis (KNKT: berhenti ±29 m setelah titik tabrakan); hanya rem darurat penuh yang menghentikan sebelum titik tabrak.';
+    if(sim.key==='C') extra=' Rem tetap dalam batas kenyamanan ISO 2631 — tanpa rem darurat.';
+    verdict('✅ <b style="color:var(--green)">TIDAK TERJADI TABRAKAN</b> — berhenti '+margin+' m sebelum titik tabrakan.'+extra);
+    updHUD(); draw();
+    return;
+  }
+  if(sim.x>=0){
+    sim.x=0; done=true; playing=false;
+    const vImp=sim.v*3.6;
+    logLine(addSec(SCEN[sim.key].t0,simT),'TABRAKAN','★ Benturan dengan KA 5568A pada ±'+fs(vImp)+' km/jam (logger aktual: 40)','c-red');
+    $('phaseChip').textContent='FASE: TABRAKAN';
+    const eRatio = (vImp*vImp)/(40*40);
+    verdict('💥 <b style="color:var(--red)">TABRAKAN pada ±'+fs(vImp)+' km/jam</b> — kejadian aktual: 40 km/jam (16 meninggal, 107 luka). Energi benturan ∝ v², skenario ini ±'+(eRatio*100).toFixed(0)+'% energi kejadian aktual.');
+    updHUD(); draw();
+    return;
+  }
+  updHUD();
+}
+
+// ===== Render =====
+function draw(){
+  const W=cv.width,H=cv.height;
+  ctx.fillStyle='#070b10'; ctx.fillRect(0,0,W,H);
+  // range view
+  let x0,x1;
+  const view=$('selView').value;
+  if(view==='full'){ x0=X.j12-120; x1=X.stop+120; }
+  else if(view==='near'){ x0=-620; x1=60; }
+  else { // follow: kereta selalu terlihat, view bergeser halus
+    const span=900;
+    x0=Math.min(Math.max(sim.x-span*0.7, X.j12-150), X.stop+80-span);
+    x1=x0+span;
+  }
+  const sx=(x)=> ( (x-x0)/(x1-x0) )*W;
+  const trackY=H*0.62;
+
+  // grid jarak tiap 100 m
+  ctx.strokeStyle='#0d141d'; ctx.fillStyle='#3a4c60'; ctx.font='10px monospace';
+  for(let m=Math.ceil(x0/100)*100;m<x1;m+=100){
+    ctx.beginPath(); ctx.moveTo(sx(m),0); ctx.lineTo(sx(m),H); ctx.stroke();
+    if(m%500===0){ ctx.fillText((m<=0?'-':'')+Math.abs(m)+'m', sx(m)+3, 12); }
+  }
+
+  // lengkung
+  ctx.fillStyle='rgba(255,181,71,.06)';
+  ctx.fillRect(sx(X.curveIn),0,sx(X.curveOut)-sx(X.curveIn),H);
+  ctx.fillStyle='rgba(255,181,71,.55)'; ctx.font='10px sans-serif';
+  ctx.fillText('LENGKUNG IP.MC22D r=946m', sx(X.curveIn)+6, H*0.13);
+
+  // rel
+  ctx.strokeStyle='#2c3a4a'; ctx.lineWidth=6;
+  ctx.beginPath(); ctx.moveTo(0,trackY); ctx.lineTo(W,trackY); ctx.stroke();
+  ctx.lineWidth=1;
+
+  // penanda objek
+  const marker=(x,color,label,above)=>{
+    const px=sx(x);
+    ctx.strokeStyle=color; ctx.fillStyle=color;
+    ctx.beginPath(); ctx.moveTo(px,trackY-26); ctx.lineTo(px,trackY+26); ctx.stroke();
+    ctx.font='bold 10px monospace';
+    const tw=ctx.measureText(label).width;
+    let lx=Math.min(Math.max(px-tw/2,4),W-tw-4);
+    ctx.fillText(label,lx,above?trackY-34:trackY+44);
+  };
+  marker(X.j12,'#3ddc84','J12 26+659',true);
+  marker(X.ub,'#f2f6fa','UB104 28+030',false);
+  marker(X.b104,'#ff5252','B104 28+440 (MERAH)',true);
+  marker(X.jpl85,'#8296ab','JPL 85',false);
+  marker(0,'#ff5252','★ TITIK TABRAK 28+915',true);
+  if(sim.key==='A'||sim.key==='E'){ marker(X.stop,'#4dd0e1','KM 28+941',false); }
+  // titik pengereman
+  const sp=sim.phases[0].x;
+  marker(sp,'#b388ff','mulai rem '+fs(-sp)+'m',false);
+
+  // posisi 5568A (terduduki di Jalur I, ekor rangkaian menghadap KA 4B)
+  ctx.fillStyle='#39516d';
+  ctx.fillRect(sx(10),trackY-14,sx(230)-sx(10),10);
+  ctx.fillStyle='#557799';
+  ctx.fillRect(sx(10),trackY-14,sx(50)-sx(10),10); // gerbong ekor — titik benturan
+  ctx.font='10px sans-serif'; ctx.fillStyle='#8296ab';
+  const lbl='KA 5568A (KRL) — Jalur I';
+  ctx.fillText(lbl, Math.min(sx(230), W-ctx.measureText(lbl).width-4), trackY-20);
+
+  // kereta KA 4B
+  const tx=sx(sim.x);
+  ctx.fillStyle='#c8d6e5';
+  ctx.fillRect(tx-14,trackY-12,14,8);
+  ctx.fillStyle='#ffb547';
+  ctx.fillRect(tx-2,trackY-13,64,10); // lokomotif CC206
+  ctx.fillStyle='#fff';
+  ctx.beginPath(); ctx.arc(tx+58,trackY-8,3,0,7); ctx.fill();
+  ctx.font='bold 10px sans-serif'; ctx.fillStyle='#d7e2ee';
+  ctx.fillText('KA 4B', tx-8, trackY-20);
+
+  // brakedist bar
+  const need = sim.key==='C' ? 1429 : 845;
+  if(sim.x<-need){
+    ctx.fillStyle='rgba(61,220,132,.12)';
+    ctx.fillRect(sx(sim.x),trackY+18,sx(sim.x+need)-sx(sim.x),6);
+    ctx.fillStyle='rgba(61,220,132,.7)'; ctx.font='9px monospace';
+    ctx.fillText('jarak henti dibutuhkan ±'+need+' m', sx(sim.x)+4, trackY+38);
+  }
+  // waktu besar
+  ctx.fillStyle='#d7e2ee'; ctx.font='bold 22px monospace';
+  ctx.fillText(addSec(SCEN[sim.key].t0,simT), 14, H-14);
+  ctx.font='12px sans-serif'; ctx.fillStyle='#8296ab';
+  ctx.fillText(sim.name, 150, H-14);
+  // lampu
+  setLamps(sim.x>X.b104, sim.x<=X.b104, sim.x<=X.ub&&sim.x>X.b104);
+}
+
+// ===== Peta Rantai Kejadian Interaktif =====
+const CHAIN = [
+  {id:'C1', lbl:'Shared track dua kelas KA + deviasi GAPEKA ganda', f:[],
+   meta:'Kondisi struktural; KAJJ & KRL berbagi jalur dengan perbedaan kecepatan/prioritas',
+   desc:'Jalur Bekasi–Cikarang dilayani KA jarak jauh (120 km/jam) dan KRL berhenti tiap stasiun pada jalur yang sama. Malam itu realisasi menyimpang dari GAPEKA: 5568A terlambat 8 mnt 32 dtk, KA 4B lebih awal 3 mnt 17 dtk — headway efektif menyempit ke ±2 menit.',
+   refs:'S1 temuan #3–5, #7 · model/02 faktor latar'},
+  {id:'C2', lbl:'KRL 5181B menabrak taksi listrik di JPL 86 (20:48:24)', f:['F2'],
+   meta:'Peristiwa pemicu — jalur hilir; terpisah dari tabrakan utama',
+   desc:'Taksi listrik tertemper di JPL 86 Jalan Ampera. OBU taksi mencatat benturan 20:48:24. Ini memicu kerumunan warga dan banjir komunikasi darurat yang menyibukkan PPKP Selatan.',
+   refs:'S1 hlm. 79, lamp. 1 · S13 · model/01 bagian 1'},
+  {id:'C3', lbl:'Kerumunan warga di jalur hulu Bekasi Timur', f:[],
+   meta:'Efek sosial dari kejadian JPL 86',
+   desc:'Warga memenuhi jalur hulu (arah Tambun) — membuat KA 5568A yang sudah mendapat aspek hijau B103 tidak dapat melanjutkan perjalanan.',
+   refs:'S1 temuan #8 · S4'},
+  {id:'C4', lbl:'KA 5568A tertahan — track 104BT terduduki', f:['F3','F4'],
+   meta:'Informasi kunci yang tidak pernah sampai ke pengendali',
+   desc:'5568A berhenti di Jalur I Bekasi Timur (20:48:55). Masinisnya melapor via panggilan individual tepat saat PPKP Selatan disibukkan kasus 5181B — tanpa notifikasi emergency di konsol. Hasilnya: tidak ada satu pun pos pengendali yang tahu Jalur I terduduki.',
+   refs:'S1 faktor #3, temuan #16–17 · model/02 faktor 3'},
+  {id:'C5', lbl:'KA 4B berjalan langsung: J12 HIJAU tanpa kuning (20:50:43)', f:['F1'],
+   meta:'Lapisan peringatan pertama tidak pernah ada',
+   desc:'Track 104BT terduduki tidak memengaruhi aspek Sinyal Keluar J12 (hanya 104AT yang berpengaruh). Masinis mendapat indikasi jalur depan aman — padahal B104 di depan merah. Hazard ini tidak teridentifikasi sejak review desain 2021–2022.',
+   refs:'S1 faktor #1, temuan #25–36 · model/02 faktor 1'},
+  {id:'C6', lbl:'Info PPKP Timur ke KA 4B tidak akurat', f:['F4'],
+   meta:'"Direm-rem dikit" — tanpa urgensi, tanpa target kecepatan',
+   desc:'PPKP Timur hanya menangkap potongan situasi (kecelakaan di hilir). Instruksi yang diberikan kepada KA 4B tidak menyebut ada kereta berhenti di depan — masinis tidak punya dasar informasi untuk antisipasi serius.',
+   refs:'S1 faktor #4, temuan #23–24 · S6'},
+  {id:'C7', lbl:'UB104 (putih horisontal = berhenti) tidak teridentifikasi', f:['F5'],
+   meta:'Lapisan peringatan terakhir sebelum B104 gagal',
+   desc:'UB104 memang menampilkan aspek benar, tetapi: LED putih mirip lampu rumah warga & pju; windshield polycarbonate penuh goresan memantulkan cahaya; pemahaman ASP "merah selalu didahului kuning" membuat perhatian tidak diarahkan ke sana.',
+   refs:'S1 faktor #5, temuan #31–39 · S11 · model/02 faktor 5'},
+  {id:'C8', lbl:'B104 merah = satu-satunya peringatan (±837 m, 105 km/jam)', f:[],
+   meta:'Jendela reaksi tinggal ±50 detik',
+   desc:'B104 baru terlihat dari ±410 m (di bawah syarat 600 m PM 44/2018) — itulah alasan UB104 dipasang. Ketika B104 terbaca merah, kereta melaju 105 km/jam dan rem gabungan butuh ±845 m: secara matematis sudah tidak cukup dari titik ini.',
+   refs:'S1 hlm. 70, 72 · S11 · model/03 skenario B'},
+  {id:'C9', lbl:'Full service ditarik; emergency ditunda di lengkung', f:['F6'],
+   meta:'Keputusan di bawah ketidakpastian — tanpa prosedur, tanpa pelatihan',
+   desc:'Masinis menahan emergency brake sampai keluar lengkung r=946 m karena khawatir jackknifing/derailment (pasal 40 PD 16A memang mengutamakan keselamatan penumpang & rangkaian). Tidak ada prosedur taktik untuk skenario ini; masinis belum pernah dilatih.',
+   refs:'S1 faktor #6, temuan #50–52 · S2 · model/02 faktor 6'},
+  {id:'C10', lbl:'Emergency brake di Km 28+588 (275 m, 78 km/jam)', f:[],
+   meta:'BP 43→0 psi, BC 0→70 psi dalam 4 detik',
+   desc:'Emergency baru ditarik setelah keluar lengkung. Rem bekerja penuh sesuai desain — tetapi jarak yang tersisa hanya 275 m dengan 78 km/jam.',
+   refs:'S1 temuan #46–48, hlm. 76'},
+  {id:'C11', lbl:'★ TABRAKAN di Km 28+915 (20:52:12) @40 km/jam', f:[],
+   meta:'Akselerometer overflow — G-force melebihi batas ukur',
+   desc:'Lokomotif menabrak ekor KA 5568A di Jalur I. Kecepatan benturan 40 km/jam (logger). Energi benturan ∝ v² — setara menabrak tembok pada ±56 km/jam.',
+   refs:'S1 temuan #40, hlm. 78 · model/03'},
+  {id:'C12', lbl:'KA 4B terseret 26 m — 16 meninggal, 107 luka', f:[],
+   meta:'Seluruh korban meninggal adalah penumpang KRL',
+   desc:'240 penumpang KAJJ selamat. Rangkaian KRL ringsek; evakuasi gabungan berlangsung semalaman. Enam hari kemudian KNKT membuka investigasi; lima bulan kemudian laporan akhir rilis — dan sehari setelahnya masinis menjadi tersangka.',
+   refs:'S1 · S5 · S13 · S2'},
+];
+const FACTORS = {
+  F1:{t:'Hazard hubungan persinyalan tak teridentifikasi', d:'Perilaku J12 terhadap okupasi track 104AT/104BT tidak pernah digambarkan dalam review desain 2022 (digambar signal-to-signal saja) — lolos dari desain, testing, hingga operasional ±5 tahun. Tipe kegagalan: latent design condition.', ref:'S1 faktor #1 · L1–L2 gagal', def:['L1 Desain persinyalan — LOLOS gap','L2 Pengujian & commissioning — LOLOS gap']},
+  F2:{t:'Komunikasi darurat masinis 5181B → PPKP gagal efektif', d:'3 menit 20 detik hanya untuk menyampaikan satu informasi darurat: mic tersangkut (>5 cm), audio reverb/warbling, tanpa tombol emergency, tanpa standar fraseologi.', ref:'S1 temuan #9–15, faktor #2 · L3 gagal', def:['L3 Komunikasi darurat — GAGAL']},
+  F3:{t:'Laporan "5568A tertahan" tidak sampai ke pengendali', d:'Panggilan individual tepat saat pengendali sibuk; tanpa notifikasi emergency di konsol Sepura S.27. Informasi kunci jalur terduduki hilang.', ref:'S1 faktor #3 · L4 gagal', def:['L4 Pelaporan 5568A — GAGAL']},
+  F4:{t:'Tidak ada mekanisme informasi PPKP Selatan ↔ PPKP Timur', d:'Prosedurnya tidak pernah ada. PPKP Timur mengendalikan KA 4B tetapi tidak bisa berkomunikasi langsung dengan KRL; radio KRL ada di meja PPKP Selatan. Info yang sampai ke KA 4B timpang.', ref:'S1 faktor #4, temuan #21–23 · L5 tidak ada', def:['L5 Koordinasi antar-PPKP — TIDAK ADA']},
+  F5:{t:'Sinyal pembantu UB104 tidak teridentifikasi', d:'Kombinasi polusi cahaya permukiman + light scattering windshield polycarbonate (Nota Dinas KAI 2015) + ekspektasi "merah selalu didahului kuning" membuat satu-satunya peringatan dini ini gagal berfungsi.', ref:'S1 faktor #5, temuan #31–39 · S11 · L6–L7 gagal', def:['L6 Sinyal pembantu UB104 — GAGAL','L7 Situational awareness awak — GAGAL']},
+  F6:{t:'Tidak ada prosedur rem darurat kecepatan tinggi di lengkung', d:'Pasal 40 PD 16A memerintahkan rem darurat mempertimbangkan keselamatan penumpang & rangkaian — tetapi tidak ada panduan taktis untuk skenario ini, dan masinis belum pernah dilatih. Keputusan menjadi penilaian subjektif.', ref:'S1 faktor #6, temuan #50–52 · S2 · L8 tidak ada', def:['L8 Prosedur rem darurat — TIDAK ADA']},
+};
+
+let selNode=null, selFactor=null;
+function renderChain(){
+  const flow=$('chainFlow'); flow.innerHTML='';
+  CHAIN.forEach((n,i)=>{
+    const d=document.createElement('div');
+    d.className='cnode'+(selNode===n.id?' sel':'');
+    d.innerHTML='<span class="cid">'+n.id+'</span><span class="clbl">'+n.lbl+'</span>'+
+      (n.f.length?'<span class="ctag">'+n.f.map(f=>'<span class="fchip'+(selFactor===f?' sel':'')+'" data-f="'+f+'">'+f+'</span>').join('')+'</span>':'');
+    d.addEventListener('click',(ev)=>{
+      const fc=ev.target.closest('.fchip');
+      if(fc){ selectFactor(fc.getAttribute('data-f')); return; }
+      selNode=(selNode===n.id?null:n.id); selFactor=null; renderChain(); showDetail();
+    });
+    flow.appendChild(d);
+    if(i<CHAIN.length-1){ const a=document.createElement('div'); a.className='arrow'; flow.appendChild(a); }
+  });
+}
+function showDetail(){
+  const el=$('chainDetail');
+  if(selFactor){
+    const f=FACTORS[selFactor];
+    el.innerHTML='<h3>'+selFactor+' — '+f.t+'</h3><div class="meta">'+f.ref+'</div><div class="box">'+f.d+'</div>'+
+      '<div class="box"><b>Lapisan pertahanan terkait:</b><ul>'+f.def.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+    return;
+  }
+  if(selNode){
+    const n=CHAIN.find(x=>x.id===selNode);
+    el.innerHTML='<h3>'+n.id+' — '+n.lbl+'</h3><div class="meta">'+n.meta+' · '+n.refs+'</div><div class="box">'+n.desc+'</div>'+
+      (n.f.length?'<div class="box"><b>Faktor berkontribusi terkait:</b><ul>'+n.f.map(f=>'<li><b>'+f+'</b> — '+FACTORS[f].t+'</li>').join('')+'</ul></div>':'');
+    return;
+  }
+  el.innerHTML='<p class="note">Pilih salah satu simpul (C1–C12) atau chip faktor (F1–F6) untuk melihat penjelasan, lapisan pertahanan terkait, dan rujukan KNKT.</p>';
+}
+function selectFactor(f){ selFactor=(selFactor===f?null:f); renderChain(); showDetail(); }
+renderChain(); showDetail();
+
+// ===== Catatan skenario & garis waktu =====
+const SCEN_NOTE = {
+  A:'Kalibrasi data logger: min.reduction 20:51:16 (1.315 m, 108 km/jam) → full service 20:51:34 (837 m) → emergency 20:51:56 (275 m, 78 km/jam) → benturan 20:52:12 (±40 km/jam).',
+  B:'Counterfactual polisi terbaik: emergency brake penuh sejak B104 merah terlihat (±870 m, 105 km/jam). Rem darurat murni −0,66 m/s² → berhenti ±190–219 m sebelum titik tabrak.',
+  C:'Counterfactual desain persinyalan normal: J12 kuning saat 104BT terduduki → rem nyaman ISO 2631 (−0,315 m/s²) sejak Km 26+659 → berhenti ±352 m sebelum B104 tanpa rem darurat.',
+  E:'Eksperimen bebas: geser titik mulai rem dan pilih pola pengereman untuk melihat hasilnya terhadap titik tabrakan.'
+};
+function updScenNote(){ $('scenNote').textContent = SCEN_NOTE[$('selScenario').value]||''; }
+
+// ===== Garis waktu (seek) =====
+function seekTo(t){
+  if(!sim) return;
+  if(playing){ playing=false; $('btnPlay').textContent='▶ Jalankan'; }
+  cancelAnimationFrame(raf);
+  reset();
+  const dtMax=0.05;
+  let remaining=t;
+  while(remaining>0 && !done){ const d=Math.min(dtMax,remaining); step(d); remaining-=d; }
+  simT=t; updHUD(); draw();
+}
+function bindTimeline(){
+  const r=$('rTime');
+  r.addEventListener('input',()=>seekTo(parseFloat(r.value)));
+}
+function syncTimeline(){ const r=$('rTime'); if(document.activeElement!==r) r.value=Math.min(130,simT).toFixed(1); }
+
+// ===== Keyboard =====
+document.addEventListener('keydown',(ev)=>{
+  if(ev.target.tagName==='INPUT'||ev.target.tagName==='SELECT') return;
+  if(ev.code==='Space'){ ev.preventDefault(); $('btnPlay').click(); }
+  else if(ev.key==='r'||ev.key==='R'){ reset(); }
+  else if(ev.key==='ArrowRight'){ seekTo(Math.min(130,simT+5)); }
+  else if(ev.key==='ArrowLeft'){ seekTo(Math.max(0,simT-5)); }
+});
+
+// ===== Analisis sensitivitas satu-faktor =====
+// Setiap baris: pemulihan SATU faktor saja (faktor lain tetap gagal), dihitung kinematika.
+const SENS = [
+  { lbl:'F1+L1 — Kuning di J12 (desain sinyal benar)', phases:[{x:-2256,v:V0,a:-DEC.COMFORT}], note:'rem nyaman ISO sejak J12', scen:'C' },
+  { lbl:'F5+L6 — UB104 teridentifikasi', phases:[{x:-885,v:V0,a:-DEC.EB}], note:'rem darurat sejak UB104 (−0,66)', scen:'E', prof:'EB', start:885 },
+  { lbl:'F5+L6 — UB104 teridentifikasi (pola aktual)', phases:[{x:-885,v:V0,a:-DEC.AVG}], note:'perlambatan gabungan −0,505', scen:null },
+  { lbl:'F4+L5 — Info PPKP Timur akurat (berhenti & lindung)', phases:[{x:-1560,v:V0,a:-DEC.AVG}], note:'stop-and-protect ±60 dtk lebih awal', scen:null },
+  { lbl:'F2+F3+F4 — Seluruh rantai komunikasi pulih', phases:[{x:-1720,v:V0,a:-DEC.AVG}], note:'proteksi sejak JPL 86 diketahui', scen:null },
+  { lbl:'F6+L8 — Prosedur rem darurat + pelatihan', phases:[{x:-837,v:V0,a:-DEC.EB}], note:'emergency tanpa ragu di lengkung', scen:'E', prof:'EB', start:837 },
+  { lbl:'Baseline — Tidak ada yang dipulihkan (aktual)', phases:[{x:-1315,v:30.0,a:-0.05},{x:-837,v:29.17,a:-DEC.FS},{x:-275,v:21.67,a:-DEC.EB}], note:'kejadian aktual', scen:'A' },
+];
+function sensResult(phases){
+  let v=phases[0].v;
+  for(let i=0;i<phases.length;i++){
+    const seg=(i<phases.length-1?phases[i+1].x:0)-phases[i].x;
+    v=Math.sqrt(Math.max(0,v*v-2*Math.abs(phases[i].a)*seg));
+  }
+  return v; // m/s di titik tabrak
+}
+function renderSens(){
+  const box=$('sensRows'); box.innerHTML='';
+  SENS.forEach((s,idx)=>{
+    const vImp=sensResult(s.phases)*3.6;
+    const impact=vImp>1;
+    const margin=impact?null:Math.round(Math.abs(stopX(s.phases)));
+    const row=document.createElement('div'); row.className='sens-row';
+    row.innerHTML='<span class="lab">'+s.lbl+'<br><span style="color:var(--dim);font-size:10.5px">'+s.note+'</span></span>'+
+      '<span class="val" style="color:'+(impact?'var(--red)':'var(--green)')+'">'+(impact?('TABRAK @'+Math.round(vImp)):(margin+' m'))+'</span>'+
+      '<span class="bar'+(impact?' red':'')+'" style="width:'+(impact?'100':Math.min(100,margin/25))+'%"></span>';
+    const btn=document.createElement('button');
+    btn.textContent='uji';
+    if(!s.scen){ btn.disabled=true; btn.title='Konfigurasi ini tidak dapat dipetakan ke skenario simulasi; hanya informasi'; }
+    else btn.addEventListener('click',()=>loadSens(s));
+    row.appendChild(btn);
+    box.appendChild(row);
+  });
+}
+function stopX(phases){
+  // Kembalikan jarak tersisa sebelum titik tabrakan bila kereta berhenti; 0 bila tetap menabrak.
+  let v=phases[0].v;
+  for(let i=0;i<phases.length;i++){
+    const seg=(i<phases.length-1?phases[i+1].x:0)-phases[i].x;
+    const dStop=v*v/(2*Math.abs(phases[i].a));
+    if(dStop<=seg){ return seg-dStop; } // berhenti di dalam fase ini
+    v=Math.sqrt(Math.max(0,v*v-2*Math.abs(phases[i].a)*seg));
+  }
+  return 0; // habis semua fase → menabrak
+}
+function loadSens(s){
+  if(!s.scen){ return; }
+  $('selScenario').value=s.scen;
+  if(s.scen==='E'){
+    $('customBox').style.display='block';
+    $('rStart').value=Math.min(1315,Math.max(400,s.start)); $('lblStart').textContent=$('rStart').value;
+    $('selProfile').value=s.prof;
+  } else { $('customBox').style.display='none'; }
+  updScenNote(); reset();
+  logLine(addSec(SCEN[s.scen].t0,simT),'SENS','Konfigurasi sensitivitas dimuat: '+s.lbl,'c-amber');
+  verdict('🔬 <b>Konfigurasi sensitivitas:</b> '+s.lbl+' — '+s.note+'. Tekan Jalankan untuk menyaksikan.');
+}
+
+// ===== UI wiring =====
+$('selScenario').addEventListener('change',()=>{ $('customBox').style.display = $('selScenario').value==='E'?'block':'none'; reset(); });
+$('rStart').addEventListener('input',()=>{ $('lblStart').textContent=$('rStart').value; });
+$('selProfile').addEventListener('change',reset);
+bindTimeline();
+renderSens();
+$('btnPlay').addEventListener('click',()=>{
+  if(done){ reset(); }
+  playing=!playing;
+  $('btnPlay').textContent = playing?'⏸ Jeda':'▶ Jalankan';
+  if(playing){ lastTs=performance.now(); raf=requestAnimationFrame(tick); }
+});
+$('btnStep').addEventListener('click',()=>{ step(0.05); draw(); });
+$('btnReset').addEventListener('click',reset);
+window.addEventListener('resize',()=>draw());
+
+reset();
+</script>
+</body>
+</html>
