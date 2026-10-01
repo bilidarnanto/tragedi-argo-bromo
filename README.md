@@ -82,6 +82,21 @@ Batasan model: perlambatan rata-rata per fase (data logger KNKT tidak seragam), 
 - [x] Analisis sensitivitas satu-faktor (7 konfigurasi)
 - [ ] (opsional) rekonkiliasi angka penyidik vs KNKT saat dokumen penyidikan terbuka
 
+## Repositori Git
+
+Repo ini di-push ke NAS BPF sebagai bare repository:
+
+```bash
+# Clone dari NAS (dalam LAN)
+git clone ssh://it-ef@192.168.2.31/home/it-ef/git/tragedi-argo-bromo.git
+
+# Remote di repo lokal bernama `nas` (branch utama: main)
+# Push memakai wrapper SSH: .tools/nas-ssh.sh (password dari ~/ssh-nas/credentials.env)
+```
+
+Catatan: toolchain git lokal ada di `.tools/gitenv/` (diabaikan git); kredensial SSH
+JANGAN pernah di-commit.
+
 ## Kredensial Sumber Utama
 
 | Dokumen | Nomor | Status |
