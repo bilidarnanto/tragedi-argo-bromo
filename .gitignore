@@ -3,3 +3,4 @@
 .tools/gitenv/
 .tools/mamba/
 .tools/package-lock.json
+.tools/nas-ssh.sh

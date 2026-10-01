@@ -84,18 +84,16 @@ Batasan model: perlambatan rata-rata per fase (data logger KNKT tidak seragam), 
 
 ## Repositori Git
 
-Repo ini di-push ke NAS BPF sebagai bare repository:
+Repo ini di-hosting di GitHub:
 
 ```bash
-# Clone dari NAS (dalam LAN)
-git clone ssh://it-ef@192.168.2.31/home/it-ef/git/tragedi-argo-bromo.git
-
-# Remote di repo lokal bernama `nas` (branch utama: main)
-# Push memakai wrapper SSH: .tools/nas-ssh.sh (password dari ~/ssh-nas/credentials.env)
+git clone https://github.com/bestprofitsurabaya/tragedi-argo-bromo.git
 ```
 
-Catatan: toolchain git lokal ada di `.tools/gitenv/` (diabaikan git); kredensial SSH
-JANGAN pernah di-commit.
+Branch utama: `main`.
+
+Catatan: toolchain git lokal ada di `.tools/gitenv/` (diabaikan git); kredensial
+(GitHub token, SSH NAS) JANGAN pernah di-commit.
 
 ## Kredensial Sumber Utama
 
