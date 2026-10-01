@@ -1,5 +1,11 @@
 # Tragedi KA Argo Bromo Anggrek — Stasiun Bekasi Timur, 27 April 2026
 
+[![CI](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/ci.yml/badge.svg)](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/ci.yml)
+[![Deploy ke GitHub Pages](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/pages-deploy.yml/badge.svg)](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/pages-deploy.yml)
+[![Situs](https://img.shields.io/badge/situs-GitHub%20Pages-58a6ff)](https://bestprofitsurabaya.github.io/tragedi-argo-bromo/)
+
+🌐 **Situs proyek:** https://bestprofitsurabaya.github.io/tragedi-argo-bromo/
+
 Proyek penelitian & pemodelan kecelakaan perkeretaapian: **tabrakan antara KA 4B Argo Bromo Anggrek
 (relasi Gambir–Surabaya Pasarturi) dengan KA 5568A Commuter Line (relasi Kampungbandan–Cikarang)
 di Jalur I Stasiun Bekasi Timur, Daop 1 Jakarta, 27 April 2026, pukul 20.52 WIB**.
