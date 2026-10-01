@@ -1,10 +1,10 @@
 # Tragedi KA Argo Bromo Anggrek — Stasiun Bekasi Timur, 27 April 2026
 
-[![CI](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/ci.yml/badge.svg)](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/ci.yml)
-[![Deploy ke GitHub Pages](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/pages-deploy.yml/badge.svg)](https://github.com/bestprofitsurabaya/tragedi-argo-bromo/actions/workflows/pages-deploy.yml)
-[![Situs](https://img.shields.io/badge/situs-GitHub%20Pages-58a6ff)](https://bestprofitsurabaya.github.io/tragedi-argo-bromo/)
+[![CI](https://github.com/bilidarnanto/tragedi-argo-bromo/actions/workflows/ci.yml/badge.svg)](https://github.com/bilidarnanto/tragedi-argo-bromo/actions/workflows/ci.yml)
+[![Deploy ke GitHub Pages](https://github.com/bilidarnanto/tragedi-argo-bromo/actions/workflows/pages-deploy.yml/badge.svg)](https://github.com/bilidarnanto/tragedi-argo-bromo/actions/workflows/pages-deploy.yml)
+[![Situs](https://img.shields.io/badge/situs-GitHub%20Pages-58a6ff)](https://bilidarnanto.github.io/tragedi-argo-bromo/)
 
-🌐 **Situs proyek:** https://bestprofitsurabaya.github.io/tragedi-argo-bromo/
+🌐 **Situs proyek:** https://bilidarnanto.github.io/tragedi-argo-bromo/
 
 Proyek penelitian & pemodelan kecelakaan perkeretaapian: **tabrakan antara KA 4B Argo Bromo Anggrek
 (relasi Gambir–Surabaya Pasarturi) dengan KA 5568A Commuter Line (relasi Kampungbandan–Cikarang)
@@ -59,7 +59,7 @@ tragedi-argo-bromo/
 
 ## Simulasi Interaktif
 
-Buka online: **https://bestprofitsurabaya.github.io/tragedi-argo-bromo/simulation/**
+Buka online: **https://bilidarnanto.github.io/tragedi-argo-bromo/simulation/**
 (atau `simulation/index.html` langsung dari disk — tanpa server, tanpa dependensi).
 
 - **Canvas lintasan**: J12 → lengkung IP.MC22D → UB104 → B104 → titik tabrakan, dengan KA 5568A terduduki di Jalur I.
@@ -94,12 +94,12 @@ Batasan model: perlambatan rata-rata per fase (data logger KNKT tidak seragam), 
 Repo di-hosting di GitHub (branch utama: `main`):
 
 ```bash
-git clone https://github.com/bestprofitsurabaya/tragedi-argo-bromo.git
+git clone https://github.com/bilidarnanto/tragedi-argo-bromo.git
 ```
 
 ### GitHub Pages
 
-Situs proyek: **https://bestprofitsurabaya.github.io/tragedi-argo-bromo/**
+Situs proyek: **https://bilidarnanto.github.io/tragedi-argo-bromo/**
 - `/` — landing page
 - `/simulation/` — simulasi interaktif
 - `/article/` — artikel versi web magazine
