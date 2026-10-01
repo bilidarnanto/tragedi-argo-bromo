@@ -26,11 +26,14 @@ jobs:
 
       - uses: actions/configure-pages@v5
 
-      # Landing page (root) + simulasi + artikel web; laporan KNKT dikecualikan dari publikasi
+      # Landing page (root) + simulasi + artikel web + gambar OG;
+      # laporan KNKT & dokumen internal dikecualikan dari publikasi
       - name: Siapkan artefak situs
         run: |
-          mkdir -p _site/simulation _site/article
+          mkdir -p _site/simulation _site/article _site/docs
           cp index.html _site/
+          cp docs/og-image.png _site/og-image.png
+          cp docs/og-image.png _site/docs/og-image.png
           cp simulation/index.html _site/simulation/
           cp article/index.html _site/article/
 
