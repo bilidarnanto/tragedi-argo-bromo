@@ -106,11 +106,16 @@ Deploy otomatis setiap push ke `main` via `.github/workflows/pages-deploy.yml`
 `.github/workflows/ci.yml` menjalankan uji simulasi headless (`node .tools/ci-test.mjs`)
 setiap push — memvalidasi fisika terhadap angka KNKT dan konsistensi log kejadian.
 
-### Mirror cadangan ke NAS BPF
+### Mirror cadangan ke NAS BPF (pull-based)
 
-Setiap push ke `main` di-mirror otomatis ke bare repo NAS
-(`it-ef@nasbpfsby.duckdns.org:~/git/tragedi-argo-bromo.git`) via
-`.github/workflows/mirror-nas.yml` (SSH deploy key di secret `NAS_SSH_KEY`).
+Backup berjalan di arah sebaliknya: **NAS menarik dari GitHub** via cron tiap 30 menit
+(`~/bin/mirror-tragedi-argo-bromo.sh` → bare repo `~/git/tragedi-argo-bromo.git`,
+log di `~/bin/mirror-tragedi-argo-bromo.log`).
+
+Alasan pull-based: router tidak mem-forward port SSH, dan record DNS publik
+berubah-ubah — push dari GitHub Actions ke NAS tidak mungkin tanpa konfigurasi
+router. Dengan pull, tidak perlu membuka port masuk sama sekali.
+
 Clone dari NAS (dalam LAN):
 
 ```bash
