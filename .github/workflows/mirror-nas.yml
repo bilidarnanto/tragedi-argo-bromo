@@ -1,0 +1,26 @@
+name: Mirror ke NAS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Mirror ke bare repo NAS BPF
+        env:
+          NAS_SSH_KEY: ${{ secrets.NAS_SSH_KEY }}
+          NAS_HOST: ${{ secrets.NAS_HOST }}
+          NAS_USER: ${{ secrets.NAS_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$NAS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p 22 "$NAS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          export GIT_SSH_COMMAND='ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes'
+          git clone --mirror "https://github.com/bestprofitsurabaya/tragedi-argo-bromo.git" mirror.git
+          cd mirror.git
+          git push --mirror "ssh://${NAS_USER}@${NAS_HOST}/home/${NAS_USER}/git/tragedi-argo-bromo.git"

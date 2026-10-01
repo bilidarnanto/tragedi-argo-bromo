@@ -1,0 +1,42 @@
+name: Deploy ke GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # Landing page (root) + simulasi + artikel web; laporan KNKT dikecualikan dari publikasi
+      - name: Siapkan artefak situs
+        run: |
+          mkdir -p _site/simulation _site/article
+          cp index.html _site/
+          cp simulation/index.html _site/simulation/
+          cp article/index.html _site/article/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

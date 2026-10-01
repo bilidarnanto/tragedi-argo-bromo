@@ -53,7 +53,8 @@ tragedi-argo-bromo/
 
 ## Simulasi Interaktif
 
-Buka `simulation/index.html` langsung di browser (tanpa server, tanpa dependensi).
+Buka online: **https://bestprofitsurabaya.github.io/tragedi-argo-bromo/simulation/**
+(atau `simulation/index.html` langsung dari disk — tanpa server, tanpa dependensi).
 
 - **Canvas lintasan**: J12 → lengkung IP.MC22D → UB104 → B104 → titik tabrakan, dengan KA 5568A terduduki di Jalur I.
 - **Fisika logger KNKT**: dekelerasi full service −0,35 m/s², emergency −0,66 m/s², kenyamanan ISO 2631 −0,315 m/s², rata-rata kejadian −0,505 m/s².
@@ -84,16 +85,40 @@ Batasan model: perlambatan rata-rata per fase (data logger KNKT tidak seragam), 
 
 ## Repositori Git
 
-Repo ini di-hosting di GitHub:
+Repo di-hosting di GitHub (branch utama: `main`):
 
 ```bash
 git clone https://github.com/bestprofitsurabaya/tragedi-argo-bromo.git
 ```
 
-Branch utama: `main`.
+### GitHub Pages
+
+Situs proyek: **https://bestprofitsurabaya.github.io/tragedi-argo-bromo/**
+- `/` — landing page
+- `/simulation/` — simulasi interaktif
+- `/article/` — artikel versi web magazine
+
+Deploy otomatis setiap push ke `main` via `.github/workflows/pages-deploy.yml`
+(laporan KNKT & dokumen internal sengaja tidak dipublikasikan di situs — hanya di repo).
+
+### CI
+
+`.github/workflows/ci.yml` menjalankan uji simulasi headless (`node .tools/ci-test.mjs`)
+setiap push — memvalidasi fisika terhadap angka KNKT dan konsistensi log kejadian.
+
+### Mirror cadangan ke NAS BPF
+
+Setiap push ke `main` di-mirror otomatis ke bare repo NAS
+(`it-ef@nasbpfsby.duckdns.org:~/git/tragedi-argo-bromo.git`) via
+`.github/workflows/mirror-nas.yml` (SSH deploy key di secret `NAS_SSH_KEY`).
+Clone dari NAS (dalam LAN):
+
+```bash
+git clone it-ef@192.168.2.31:git/tragedi-argo-bromo.git
+```
 
 Catatan: toolchain git lokal ada di `.tools/gitenv/` (diabaikan git); kredensial
-(GitHub token, SSH NAS) JANGAN pernah di-commit.
+(GitHub token, SSH key NAS) JANGAN pernah di-commit.
 
 ## Kredensial Sumber Utama
 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tragedi KA Argo Bromo Anggrek — Bekasi Timur, 27 April 2026</title>
+<meta name="description" content="Proyek penelitian & pemodelan kecelakaan perkeretaapian: tabrakan KA 4B Argo Bromo Anggrek dengan KA 5568A Commuter Line di Stasiun Bekasi Timur, 27 April 2026. Berbasis laporan akhir KNKT.">
+<style>
+  :root {
+    --bg: #0e1116; --panel: #161b22; --border: #2d333b;
+    --text: #e6e8eb; --muted: #9aa4af; --accent: #e5534b; --link: #58a6ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 80px; }
+  header { border-left: 4px solid var(--accent); padding-left: 20px; margin-bottom: 40px; }
+  h1 { font-size: 1.9rem; margin: 0 0 8px; line-height: 1.3; }
+  .sub { color: var(--muted); font-size: 1.02rem; margin: 0; }
+  .stats { display: flex; gap: 28px; flex-wrap: wrap; margin: 28px 0 8px; padding: 18px 20px;
+           background: var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+  .stat b { display: block; font-size: 1.5rem; color: var(--accent); }
+  .stat span { color: var(--muted); font-size: .85rem; }
+  h2 { font-size: 1.15rem; margin: 40px 0 14px; color: var(--text); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  a.card {
+    display: block; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; text-decoration: none; color: var(--text);
+    transition: border-color .15s;
+  }
+  a.card:hover { border-color: var(--link); }
+  .card .ico { font-size: 1.4rem; }
+  .card b { display: block; margin: 6px 0 4px; font-size: 1.02rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .88rem; }
+  ul.docs { list-style: none; padding: 0; margin: 0; }
+  ul.docs li { padding: 9px 0; border-bottom: 1px solid var(--border); }
+  ul.docs li:last-child { border-bottom: none; }
+  ul.docs a { color: var(--link); text-decoration: none; }
+  ul.docs a:hover { text-decoration: underline; }
+  ul.docs .desc { color: var(--muted); font-size: .88rem; margin-left: 8px; }
+  footer { margin-top: 56px; color: var(--muted); font-size: .85rem; }
+  footer a { color: var(--link); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Tragedi KA Argo Bromo Anggrek</h1>
+    <p class="sub">Stasiun Bekasi Timur, Daop 1 Jakarta &middot; 27 April 2026, pukul 20.52 WIB<br>
+    Tabrakan KA 4B Argo Bromo Anggrek (Gambir&ndash;Surabaya Pasarturi) dengan KA 5568A Commuter Line (Kampungbandan&ndash;Cikarang)</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>16</b><span>meninggal dunia</span></div>
+    <div class="stat"><b>107</b><span>luka-luka</span></div>
+    <div class="stat"><b>KNKT.26.04.03.02</b><span>laporan akhir (rilis 28&ndash;29 Sep 2026)</span></div>
+    <div class="stat"><b>6 faktor</b><span>berkontribusi versi KNKT</span></div>
+  </div>
+
+  <h2>Aplikasi Interaktif</h2>
+  <div class="cards">
+    <a class="card" href="simulation/">
+      <span class="ico">🚆</span>
+      <b>Simulasi Interaktif</b>
+      <p>Fisika berbasis data logger KNKT, 4 skenario (aktual, rem darurat, sinyal tersedia, kustom), peta rantai kejadian 12 simpul, garis waktu seek, dan analisis sensitivitas satu-faktor.</p>
+    </a>
+    <a class="card" href="article/">
+      <span class="ico">📰</span>
+      <b>Artikel Long-form</b>
+      <p>Kisah naratif kejadian, investigasi KNKT, dan kesenjangan antara temuan keselamatan dengan proses hukum pidana — versi web magazine.</p>
+    </a>
+  </div>
+
+  <h2>Model &amp; Dokumen Penelitian</h2>
+  <ul class="docs">
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/model/01-kronologi.md">01 &middot; Kronologi</a><span class="desc">— rekonstruksi menit-per-menit</span></li>
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/model/02-faktor-berkontribusi.md">02 &middot; Faktor Berkontribusi</a><span class="desc">— 6 faktor KNKT + mekanisme sebab-akibat</span></li>
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/model/03-rantai-kejadian.md">03 &middot; Rantai Kejadian</a><span class="desc">— causal chain 12 simpul + Swiss Cheese + counterfactual</span></li>
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/model/04-sidang-masinis.md">04 &middot; Sidang Masinis</a><span class="desc">— analisis dual-track: KNKT vs penyidikan pidana</span></li>
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/sources.md">Sumber</a><span class="desc">— katalog 23+ sumber primer &amp; sekunder dengan sitasi [S#]</span></li>
+    <li><a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo/blob/main/docs/KNKT/KNKT.26.04.03.02-Final-Report.pdf">Laporan Akhir KNKT (PDF)</a><span class="desc">— arsip 141 halaman, di repo GitHub</span></li>
+  </ul>
+
+  <footer>
+    Proyek penelitian terbuka &middot; <a href="https://github.com/bestprofitsurabaya/tragedi-argo-bromo">source code di GitHub</a> &middot;
+    setiap klaim faktual dirujuk ke sumber; KNKT menegaskan penetapan faktor berkontribusi bukan penetapan kesalahan hukum.
+  </footer>
+
+</div>
+</body>
+</html>
